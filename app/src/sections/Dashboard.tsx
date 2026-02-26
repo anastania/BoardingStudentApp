@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import {
   Briefcase,
   Heart,
@@ -9,7 +10,8 @@ import {
   MapPin,
   Clock,
   MessageSquare,
-  Search
+  Search,
+  Loader2,
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -31,11 +33,32 @@ interface DashboardProps {
 }
 
 export function Dashboard({ onNavigate }: DashboardProps) {
+  const [loading, setLoading] = useState(true);
+  
+  // Simulate API loading
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 800);
+    return () => clearTimeout(timer);
+  }, []);
+
   const stats = mockDashboardStats;
   const recentNotifications = mockNotifications.slice(0, 3);
   const savedOpps = mockStudentOpportunities.filter(so => so.status === 'saved');
   const upcomingAppointment = mockAppointments.find(a => a.status === 'scheduled');
   const currentStep = mockJourney.steps.find(s => s.status === 'current');
+
+  if (loading) {
+    return (
+      <div className="p-4 lg:p-8 max-w-7xl mx-auto flex items-center justify-center min-h-[60vh]">
+        <div className="text-center">
+          <Loader2 className="w-12 h-12 animate-spin text-primary mx-auto mb-4" />
+          <p className="text-slate-600">Loading your dashboard...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="p-4 lg:p-8 max-w-7xl mx-auto">
