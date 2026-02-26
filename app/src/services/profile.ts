@@ -1,4 +1,4 @@
-import apiClient, { type PaginatedResponse } from './api';
+import apiClient from './api';
 import type {
   StudentProfile,
   ProfileCreateRequest,
